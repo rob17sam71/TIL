@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block body %}
+<div class="shadow-2xl rounded-lg p-4">
+    <div class="container p-6">
+      <h1 class="my-4 text-3xl font-extralight">Profile Update</h1>
+      <p class="font-sans font-light">  
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+            <div class="form-group">
+                <button class="my-4 transition-all delay-150 duration-300 ease-in-out rounded-full w-full place-self-center py-2 px-4 text-white font-semibold bg-blue-500 hover:-translate-y-0.5 hover:scale-110 hover:bg-indigo-500 duration-300"type="submit">
+                    Update
+                </button>
+            </div>
+        </fieldset>
+    </form>
+      </p>
+    </div>
+  </div>
+
+{% endblock body %}

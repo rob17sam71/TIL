@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}{{user.username}}{% endblock title %}
+
+{% block body %}
+<!-- component -->
+<div class="rounded-3xl overflow-hidden shadow-xl max-w-xs my-3">
+    <img src="https://i.imgur.com/dYcYQ7E.png" class="w-full" />
+  <div class="flex justify-center -mt-8">
+    {% thumbnail user.profile.image "100x100" crop="center" as im %}
+        <img src="{{im.url}}" class="rounded-full border-solid border-zinc-600 border-2 drop-shadow-xl mt-3">
+    {% empty %}
+        <img src="{% static "images/default-avatar.png" %}" class="rounded-full border-solid border-zinc-600 border-2 drop-shadow-xl mt-3">
+    {% endthumbnail %}
+  </div>
+  <div class="text-center px-3 pb-6 pt-2">
+      <h3 class="text-gray-800 text-sm bold font-sans">{{ user.username }}</h3>
+
+      {% if request.user.is_authenticated %}
+        {% if request.user != user %}
+          <div class="mt-3">
+            <button class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center js-follow" data-username ="{{ user.username}}" data-action="{% if you_follow %}un{%endif%}follow" data-url="{% url 'profiles:follow' user.username%}" type="button">
+              <span class="mr-2 js-follow-text">
+                {%if you_follow%}
+                  Unfollow
+                {% else %}
+                  Follow
+                {% endif %}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentcolor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+              </svg>
+            </button>
+          </div>
+        {% else %}
+        <br>
+          <a class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center" href="{% url "update" %}">
+            Update Profile &nbsp;
+            <i class='bx bx-edit font-bold text-lg'></i>  
+          </a>
+        {% endif %}
+      {% else %}
+        <div class="mt-3 text-sm">
+          Login to follow {{user.username}}
+        </div>
+      {% endif %}
+  </div>
+    <div class="flex justify-center pb-3 text-gray-800">
+    <div class="text-center mr-3 border-r pr-3">
+      <h2>{{ total_posts }}</h2>
+      <span>Posts</span>
+    </div>
+    <div class="text-center">
+      <h2>{{ total_follow }}</h2>
+      <span>Followers</span>
+    </div>
+    </div>
+</div>  
+{% endblock body %}
